@@ -1,0 +1,59 @@
+/*
+ * this program is for ARDUINO NANO OR UNO/MEGA
+ * Products the time, date, temp, and humidity
+ */
+
+#include <LiquidCrystal.h>  // Include LiquidCrystal Library
+#include <dht.h>   // Include DHTlib Library- Download from Description.
+#include <Wire.h>
+#include <DS3231.h>
+
+#define outPin 3 ///was 2 for mega  pin for temp sensor DATA
+
+DS3231 clock;
+RTCDateTime dt;
+
+LiquidCrystal lcd(4, 5, 6, 9, 10, 11); // Create an LCD object.  for NANO
+
+dht DHT;    // Create a DHT object
+
+void setup() {
+  lcd.begin(16,3); // Initialize the LCD
+  clock.begin();
+  clock.setDateTime(__DATE__, __TIME__); 
+}
+
+void loop() {
+  int readData = DHT.read11(outPin);
+  int t = DHT.temperature;
+  int h = DHT.humidity;
+  dt = clock.getDateTime();
+  unsigned int y = dt.year;
+  unsigned int month =dt.month;
+  unsigned int day =dt.day;
+  unsigned int hour =dt.hour;
+  unsigned int minute =dt.minute;
+  float second =dt.second;
+  
+  // For leading zero look to DS3231_dateformat example
+  lcd.setCursor(0,0);
+  
+  lcd.print(hour);  lcd.print(":");
+  lcd.print(minute);  lcd.print("  ");
+  lcd.print(day);  lcd.print("-");
+  lcd.print(month);  lcd.print("-");
+  lcd.print(y);  //lcd.print("-");
+
+  delay(1000);
+  
+  lcd.setCursor(0,1); //lcd new line
+  
+  lcd.print("T:");
+  lcd.print(t);
+  lcd.print((char)223);//shows degrees character
+  lcd.print("C ");
+  lcd.print("H:");
+  lcd.print(h);
+  lcd.print("%");
+  
+}
