@@ -4,11 +4,11 @@
  */
 
 #include <LiquidCrystal.h>  // Include LiquidCrystal Library
-#include <dht.h>   // Include DHTlib Library- Download from Description.
+#include <dht.h>   // Include DHTlib Library
 #include <Wire.h>
 #include <DS3231.h>
 
-#define outPin 3 ///was 2 for mega  pin for temp sensor DATA
+#define outPin 3 
 
 DS3231 clock;
 RTCDateTime dt;
